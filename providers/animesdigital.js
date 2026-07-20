@@ -1,5 +1,5 @@
 /**
- * AnimesDigital - Nuvio Provider (Fixed Build)
+ * AnimesDigital - Nuvio Provider (Fixed Build + ID Routing)
  *
  * Scrapes animesdigital.org — Brazilian anime catalog that serves direct HLS
  * playlists.
@@ -34,6 +34,11 @@
  *        instead of dumping the raw URL slug. Example:
  *        "kimetsu-no-yaiba-hashira-geiko-hen" → "Hashira Geiko Hen".
  *
+ *   v1.3.0
+ *     8) ID Routing Support: Added native fetchers for Kitsu (`kitsu:`), 
+ *        MyAnimeList (`mal:`), and AniList (`al:`) to fix lookup failures 
+ *        when the caller uses anime-specific metadata IDs instead of TMDB.
+ *
  * Author of fixes: community fork — original logic by Nuvio Team.
  *
  * Hermes-safe (generator + __async helper, no async/await).
@@ -43,7 +48,7 @@
 var TMDB_API_KEY = "68e094699525b18a70bab2f86b1fa706";
 var BASE_URL = "https://animesdigital.org";
 var PROVIDER_TAG = "AnimesDigital";
-var PROVIDER_VERSION = "1.2.0";
+var PROVIDER_VERSION = "1.3.0";
 var USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36";
 
@@ -97,7 +102,7 @@ function fetchJson(url, opts) {
   if (!opts) opts = {};
   return __async(this, null, function* () {
     try {
-      var r = yield fetch(url, {
+      var fetchOpts = {
         method: opts.method || "GET",
         redirect: "follow",
         headers: Object.assign(
@@ -108,7 +113,11 @@ function fetchJson(url, opts) {
           },
           opts.headers || {}
         ),
-      });
+      };
+      
+      if (opts.body) fetchOpts.body = opts.body;
+
+      var r = yield fetch(url, fetchOpts);
       var t = yield r.text();
       try { return { status: r.status, data: JSON.parse(t) }; }
       catch (e) { return { status: r.status, data: null, raw: t }; }
@@ -199,18 +208,10 @@ function isStrictMatch(slug, expectedRoots, strongTokens) {
   return false;
 }
 
-// FIX #7: turn slug into a human-readable arc/season name.
-// "kimetsu-no-yaiba-hashira-geiko-hen-dublado" → "Hashira Geiko Hen"
-// "naruto-classico" → "Clássico"
-// "one-piece" → "" (same as main title, omit)
 function prettyArcName(slug, info) {
   if (!slug) return "";
   var body = slugBody(stripListSuffix(slug));
 
-  // The "main" slug is derived ONLY from info.title and info.originalTitle
-  // (not from alt titles). Alt titles are usually arc/season names and we
-  // do NOT want to strip them, otherwise distinct arcs collapse into the
-  // same display label.
   var mainSlugs = [];
   function pushMain(t) {
     if (!t) return;
@@ -218,8 +219,6 @@ function prettyArcName(slug, info) {
     if (s2 && mainSlugs.indexOf(s2) === -1) mainSlugs.push(s2);
     var noThe = s2.replace(/^the-/, "");
     if (noThe && noThe !== s2 && mainSlugs.indexOf(noThe) === -1) mainSlugs.push(noThe);
-    // The part after the colon counts too (e.g. main = "Demon Slayer: Kimetsu
-    // no Yaiba" → also strip "kimetsu-no-yaiba" so arc names are exposed).
     if (t.indexOf(":") !== -1) {
       var afterColon = t.split(":").slice(1).join(":").trim();
       var afterSlug = slugify(afterColon);
@@ -230,12 +229,10 @@ function prettyArcName(slug, info) {
   pushMain(info.originalTitle);
   mainSlugs.sort(function (a, b) { return b.length - a.length; });
 
-  // If body matches the main title exactly → nothing extra to show.
   for (var ci = 0; ci < mainSlugs.length; ci++) {
     if (body === mainSlugs[ci]) return "";
   }
 
-  // Strip the longest matching MAIN prefix; the remainder is the arc/season.
   var trimmed = body;
   for (var cj = 0; cj < mainSlugs.length; cj++) {
     var cs = mainSlugs[cj];
@@ -253,15 +250,28 @@ function prettyArcName(slug, info) {
 }
 
 // ─────────────────────────────────────────────
-// TMDB
+// METADATA FETCHERS (TMDB, Kitsu, MAL, AniList)
 // ─────────────────────────────────────────────
 function getTmdbInfo(tmdbId, type) {
   return __async(this, null, function* () {
+    var cleanId = String(tmdbId).replace(/[^a-zA-Z0-9]/g, "").replace(/^tmdb/i, ""); 
+    var isImdb = cleanId.indexOf("tt") === 0;
+    var d = null;
+    if (isImdb) {
+       var findUrl = "https://api.themoviedb.org/3/find/" + cleanId + "?api_key=" + TMDB_API_KEY + "&external_source=imdb_id&language=pt-BR";
+       var fRes = yield fetchJson(findUrl);
+       if (!fRes.data) return null;
+       var results = (type === "tv" || type === "anime") ? fRes.data.tv_results : fRes.data.movie_results;
+       if (results && results.length > 0) d = results[0];
+       if (!d) return null;
+       cleanId = d.id;
+    }
+
     var path = type === "tv" ? "tv" : "movie";
-    var base = "https://api.themoviedb.org/3/" + path + "/" + tmdbId;
+    var base = "https://api.themoviedb.org/3/" + path + "/" + cleanId;
     var ptRes = yield fetchJson(base + "?api_key=" + TMDB_API_KEY + "&language=pt-BR");
     if (!ptRes.data) return null;
-    var d = ptRes.data;
+    d = ptRes.data;
     var origin = d.origin_country || [];
     var isJapaneseOrigin =
       d.original_language === "ja" ||
@@ -291,6 +301,73 @@ function getTmdbInfo(tmdbId, type) {
       originCountry: origin,
       isAnime: isJapaneseOrigin,
     };
+  });
+}
+
+function getKitsuInfo(id) {
+  return __async(this, null, function* () {
+      var res = yield fetchJson("https://kitsu.io/api/edge/anime/" + id);
+      if (!res.data || !res.data.data || !res.data.data.attributes) return null;
+      var attr = res.data.data.attributes;
+      var altTitles = [];
+      if (attr.titles) {
+          if (attr.titles.en) altTitles.push(attr.titles.en);
+          if (attr.titles.en_jp) altTitles.push(attr.titles.en_jp);
+          if (attr.titles.ja_jp) altTitles.push(attr.titles.ja_jp);
+      }
+      if (attr.abbreviatedTitles) {
+          altTitles = altTitles.concat(attr.abbreviatedTitles);
+      }
+      return {
+          title: attr.titles.en_jp || attr.titles.en || attr.canonicalTitle,
+          originalTitle: attr.titles.ja_jp || attr.canonicalTitle,
+          altTitles: altTitles,
+          year: (attr.startDate || "").split("-")[0] || null,
+          isAnime: true
+      };
+  });
+}
+
+function getMalInfo(id) {
+  return __async(this, null, function* () {
+      var res = yield fetchJson("https://api.jikan.moe/v4/anime/" + id);
+      if (!res.data || !res.data.data) return null;
+      var attr = res.data.data;
+      var altTitles = attr.title_synonyms || [];
+      if (attr.title_english) altTitles.push(attr.title_english);
+      if (attr.title_japanese) altTitles.push(attr.title_japanese);
+      
+      return {
+          title: attr.title || attr.title_english,
+          originalTitle: attr.title_japanese || attr.title,
+          altTitles: altTitles,
+          year: attr.year || (attr.aired && attr.aired.from ? attr.aired.from.split("-")[0] : null),
+          isAnime: true
+      };
+  });
+}
+
+function getAnilistInfo(id) {
+  return __async(this, null, function* () {
+      var query = 'query($id:Int){Media(id:$id,type:ANIME){title{romaji english native} synonyms startDate{year}}}';
+      var res = yield fetchJson("https://graphql.anilist.co", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: query, variables: { id: parseInt(id) } })
+      });
+      if (!res.data || !res.data.data || !res.data.data.Media) return null;
+      var media = res.data.data.Media;
+      var altTitles = media.synonyms || [];
+      if (media.title.english) altTitles.push(media.title.english);
+      if (media.title.native) altTitles.push(media.title.native);
+
+      return {
+          title: media.title.romaji || media.title.english,
+          originalTitle: media.title.native || media.title.romaji,
+          altTitles: altTitles,
+          year: media.startDate ? media.startDate.year : null,
+          isAnime: true
+      };
   });
 }
 
@@ -335,7 +412,6 @@ function buildStrongTokens(info) {
 
 // ─────────────────────────────────────────────
 // Search animesdigital
-// FIX #1: site moved from /?s=Q (now 302) to /search/Q (200).
 // ─────────────────────────────────────────────
 function searchAnime(query) {
   return __async(this, null, function* () {
@@ -346,7 +422,6 @@ function searchAnime(query) {
     var url = BASE_URL + "/search/" + encodeURIComponent(slugQuery);
     var res = yield fetchText(url);
 
-    // Fallback: try the legacy ?s= URL in case the site rolls back.
     if (!res || res.status !== 200 || res.text.length < 2000) {
       var legacyUrl = BASE_URL + "/?s=" + encodeURIComponent(query);
       res = yield fetchText(legacyUrl);
@@ -356,7 +431,6 @@ function searchAnime(query) {
     var results = [];
     var seen = {};
     var re = /href=["'](?:https?:\/\/[^\/]+)?\/(?:anime|desenho|dorama|tokusatsu)\/[a-z]+\/([a-z0-9-]+)\/?["']/gi;
-    var reFilm = /href=["'](?:https?:\/\/[^\/]+)?\/filme\/[a-z]+\/([a-z0-9-]+)\/?["']/gi;
     var m;
     while ((m = re.exec(res.text)) !== null) {
       var full = m[1];
@@ -473,10 +547,6 @@ function parseEpisodes(html) {
 
 // ─────────────────────────────────────────────
 // Extract HLS/MP4 from episode page
-// FIX #5: Skip "fake MP4" iframes on animesdigital.org. The site embeds
-// a decoy iframe whose src ends in ".mp4" but actually serves an
-// obfuscated HTML player (not a real video). Only iframes pointing at
-// external hosts (api.anivideo.net, cdn-s01.*, etc.) are real streams.
 // ─────────────────────────────────────────────
 function extractStream(html) {
   var ifRe = /<iframe[^>]+src=["']([^"']+)["']/gi;
@@ -487,26 +557,20 @@ function extractStream(html) {
   for (var i = 0; i < iframes.length; i++) {
     var src = iframes[i];
 
-    // FIX #5a: skip same-domain iframes — they are HTML player wrappers.
     if (/^https?:\/\/(?:www\.)?animesdigital\.org\//i.test(src)) continue;
 
-    // a) videohls.php?d=<url>
     var dMatch = src.match(/[?&]d=([^&]+)/);
     if (dMatch) {
       var inner = dMatch[1];
       try { inner = decodeURIComponent(inner); } catch (e) {}
-      // FIX #5b: also skip decoded URLs that point back at animesdigital.
       if (/^https?:\/\/(?:www\.)?animesdigital\.org\//i.test(inner)) continue;
       if (/\.m3u8/i.test(inner)) return { url: inner, type: "hls", referer: BASE_URL + "/" };
       if (/\.mp4/i.test(inner)) return { url: inner, type: "mp4", referer: BASE_URL + "/" };
     }
-    // b) direct .m3u8/.mp4 iframe (rare)
     if (/\.m3u8/i.test(src)) return { url: src, type: "hls", referer: BASE_URL + "/" };
     if (/\.mp4(\?|$)/i.test(src)) return { url: src, type: "mp4", referer: BASE_URL + "/" };
   }
 
-  // 2) Direct .m3u8/.mp4 anywhere on the page (fallback)
-  // FIX #5c: also exclude same-domain matches here.
   var direct = html.match(/https?:\/\/[^"'\s<>]+\.m3u8[^"'\s<>]*/gi);
   if (direct) {
     for (var di = 0; di < direct.length; di++) {
@@ -529,8 +593,6 @@ function extractStream(html) {
 
 // ─────────────────────────────────────────────
 // Build stream object
-// FIX #3: notWebReady=true so Nuvio uses native demuxer.
-// FIX #7: friendlier display title.
 // ─────────────────────────────────────────────
 function toStream(sx, info, animeSlug, season, episode, relevance, isDubbed) {
   var mainTitle = info.title || info.originalTitle || "Anime";
@@ -540,7 +602,6 @@ function toStream(sx, info, animeSlug, season, episode, relevance, isDubbed) {
     : "";
   var flag = isDubbed ? "DUB" : "LEG";
 
-  // Replace raw slug with a friendly arc/season name if there's extra info.
   var arc = prettyArcName(animeSlug, info);
   var arcSuffix = arc ? " · " + arc : "";
 
@@ -574,15 +635,27 @@ function getStreams(tmdbId, type, season, episode) {
   return __async(this, null, function* () {
     try {
       if (!tmdbId) return [];
-      var info = yield getTmdbInfo(tmdbId, type);
+
+      var info = null;
+      var idString = String(tmdbId);
+
+      // Roteamento inteligente de IDs
+      if (idString.indexOf("kitsu:") === 0) {
+          info = yield getKitsuInfo(idString.split(":")[1]);
+      } else if (idString.indexOf("mal:") === 0) {
+          info = yield getMalInfo(idString.split(":")[1]);
+      } else if (idString.indexOf("al:") === 0) {
+          info = yield getAnilistInfo(idString.split(":")[1]);
+      } else {
+          info = yield getTmdbInfo(tmdbId, type);
+      }
+
       if (!info || (!info.title && !info.originalTitle)) return [];
 
       if (!info.isAnime) {
         console.log(
           "[" + PROVIDER_TAG + "] skipping non-anime: " +
-          (info.title || info.originalTitle) +
-          " (lang=" + info.originalLanguage + ", origin=" +
-          (info.originCountry || []).join(",") + ")"
+          (info.title || info.originalTitle)
         );
         return [];
       }
@@ -604,7 +677,6 @@ function getStreams(tmdbId, type, season, episode) {
       }
       if (queries.length === 0) return [];
 
-      // 1) DIRECT GUESSES
       var candidatePages = [];
       var seenPage = {};
       var directGuesses = buildDirectGuessPages(info, season);
@@ -621,7 +693,6 @@ function getStreams(tmdbId, type, season, episode) {
         }
       }
 
-      // 2) FALLBACK SEARCHES
       if (candidatePages.length < 4) {
         for (var q = 0; q < queries.length && candidatePages.length < 6; q++) {
           var searchResults = yield searchAnime(queries[q]);
@@ -647,7 +718,7 @@ function getStreams(tmdbId, type, season, episode) {
 
       var targetEp = type === "tv" ? (episode || 1) : 1;
       var streams = [];
-      var seenStreamUrl = {}; // FIX #6: dedup by final stream URL.
+      var seenStreamUrl = {}; 
 
       for (var cp = 0; cp < candidatePages.length && streams.length < 4; cp++) {
         var page = candidatePages[cp];
@@ -722,7 +793,6 @@ function getStreams(tmdbId, type, season, episode) {
           continue;
         }
 
-        // FIX #6: skip if we've already emitted this exact stream URL.
         if (seenStreamUrl[sx.url]) {
           console.log(
             "[" + PROVIDER_TAG + "] dedup: " + page.slug + " → same URL as previous, skipping"
