@@ -1,12 +1,13 @@
 /**
  * Anitube - Nuvio Provider (Port of Stremio Addon Logic)
+ * Revisado para compatibilidade com TMDB, Kitsu, MyAnimeList e AniList.
  */
 "use strict";
 
 var TMDB_API_KEY = "68e094699525b18a70bab2f86b1fa706";
 var BASE_URL = "https://www.anitube.zip";
 var PROVIDER_TAG = "Anitube";
-var PROVIDER_VERSION = "4.0.0";
+var PROVIDER_VERSION = "4.1.0";
 var USER_AGENT = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36";
 
 var __async = function (__this, __arguments, generator) {
@@ -41,7 +42,7 @@ function fetchJson(url, opts) {
   if (!opts) opts = {};
   return __async(this, null, function* () {
     try {
-      var r = yield fetch(url, {
+      var fetchOpts = {
         method: opts.method || "GET",
         redirect: "follow",
         headers: Object.assign({
@@ -49,7 +50,11 @@ function fetchJson(url, opts) {
           Accept: "application/json, */*",
           "Accept-Language": "pt-BR,pt;q=0.9"
         }, opts.headers || {})
-      });
+      };
+      // Suporte a body para o GraphQL do AniList
+      if (opts.body) fetchOpts.body = opts.body;
+      
+      var r = yield fetch(url, fetchOpts);
       var t = yield r.text();
       try { return { status: r.status, data: JSON.parse(t) }; }
       catch (e) { return { status: r.status, data: null, raw: t }; }
@@ -58,7 +63,7 @@ function fetchJson(url, opts) {
 }
 
 // ─────────────────────────────────────────────
-// Similarity & String utilities (from Stremio addon)
+// Similarity & String utilities
 // ─────────────────────────────────────────────
 function normalize(s) {
   if (!s) return "";
@@ -190,8 +195,9 @@ function buildAllTitles(title, aliases) {
 }
 
 // ─────────────────────────────────────────────
-// TMDB
+// METADATA FETCHERS (TMDB, Kitsu, MAL, AniList)
 // ─────────────────────────────────────────────
+
 function getTmdbInfo(tmdbId, type) {
   return __async(this, null, function* () {
     var cleanId = String(tmdbId).replace(/[^a-zA-Z0-9]/g, "").replace(/^tmdb/i, ""); 
@@ -233,6 +239,73 @@ function getTmdbInfo(tmdbId, type) {
       year: ((d.release_date || d.first_air_date || "").split("-")[0]) || null,
       isAnime: isJapaneseOrigin,
     };
+  });
+}
+
+function getKitsuInfo(id) {
+  return __async(this, null, function* () {
+      var res = yield fetchJson("https://kitsu.io/api/edge/anime/" + id);
+      if (!res.data || !res.data.data || !res.data.data.attributes) return null;
+      var attr = res.data.data.attributes;
+      var altTitles = [];
+      if (attr.titles) {
+          if (attr.titles.en) altTitles.push(attr.titles.en);
+          if (attr.titles.en_jp) altTitles.push(attr.titles.en_jp);
+          if (attr.titles.ja_jp) altTitles.push(attr.titles.ja_jp);
+      }
+      if (attr.abbreviatedTitles) {
+          altTitles = altTitles.concat(attr.abbreviatedTitles);
+      }
+      return {
+          title: attr.titles.en_jp || attr.titles.en || attr.canonicalTitle,
+          originalTitle: attr.titles.ja_jp || attr.canonicalTitle,
+          altTitles: altTitles,
+          year: (attr.startDate || "").split("-")[0] || null,
+          isAnime: true
+      };
+  });
+}
+
+function getMalInfo(id) {
+  return __async(this, null, function* () {
+      var res = yield fetchJson("https://api.jikan.moe/v4/anime/" + id);
+      if (!res.data || !res.data.data) return null;
+      var attr = res.data.data;
+      var altTitles = attr.title_synonyms || [];
+      if (attr.title_english) altTitles.push(attr.title_english);
+      if (attr.title_japanese) altTitles.push(attr.title_japanese);
+      
+      return {
+          title: attr.title || attr.title_english,
+          originalTitle: attr.title_japanese || attr.title,
+          altTitles: altTitles,
+          year: attr.year || (attr.aired && attr.aired.from ? attr.aired.from.split("-")[0] : null),
+          isAnime: true
+      };
+  });
+}
+
+function getAnilistInfo(id) {
+  return __async(this, null, function* () {
+      var query = 'query($id:Int){Media(id:$id,type:ANIME){title{romaji english native} synonyms startDate{year}}}';
+      var res = yield fetchJson("https://graphql.anilist.co", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: query, variables: { id: parseInt(id) } })
+      });
+      if (!res.data || !res.data.data || !res.data.data.Media) return null;
+      var media = res.data.data.Media;
+      var altTitles = media.synonyms || [];
+      if (media.title.english) altTitles.push(media.title.english);
+      if (media.title.native) altTitles.push(media.title.native);
+
+      return {
+          title: media.title.romaji || media.title.english,
+          originalTitle: media.title.native || media.title.romaji,
+          altTitles: altTitles,
+          year: media.startDate ? media.startDate.year : null,
+          isAnime: true
+      };
   });
 }
 
@@ -373,7 +446,21 @@ function getStreams(tmdbId, type, season, episode) {
   return __async(this, null, function* () {
     try {
       if (!tmdbId) return [];
-      var info = yield getTmdbInfo(tmdbId, type);
+      
+      var info = null;
+      var idString = String(tmdbId);
+      
+      // Roteamento inteligente de IDs
+      if (idString.indexOf("kitsu:") === 0) {
+          info = yield getKitsuInfo(idString.split(":")[1]);
+      } else if (idString.indexOf("mal:") === 0) {
+          info = yield getMalInfo(idString.split(":")[1]);
+      } else if (idString.indexOf("al:") === 0) {
+          info = yield getAnilistInfo(idString.split(":")[1]);
+      } else {
+          info = yield getTmdbInfo(tmdbId, type);
+      }
+
       if (!info || (!info.title && !info.originalTitle)) return [];
       
       console.log("[" + PROVIDER_TAG + " v" + PROVIDER_VERSION + "] " + type + " " + (info.title || info.originalTitle));
@@ -491,4 +578,4 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = { getStreams: getStreams };
 } else if (typeof global !== "undefined") {
   global.getStreams = getStreams;
-}
+            }
