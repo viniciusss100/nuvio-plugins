@@ -97,7 +97,7 @@
     },
     {
       "id": "fshd",
-      "name": "[Saimuel] FSHD",
+      "name": "FSHD",
       "description": "FSHD - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
@@ -116,7 +116,7 @@
     },
     {
       "id": "megaembed",
-      "name": "[Saimuel] MegaEmbed",
+      "name": "MegaEmbed",
       "description": "MegaEmbed - API| 1080p/720p",
       "version": "1.0.0",
       "author": "saimuel",
@@ -135,7 +135,7 @@
     },
     {
       "id": "peachify",
-      "name": "[Saimuel] Peachify",
+      "name": "Peachify",
       "description": "Peachify - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
@@ -154,7 +154,7 @@
     },
     {
       "id": "redeflix",
-      "name": "[Saimuel] RedeFlix",
+      "name": "RedeFlix",
       "description": "RedeFlix - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
@@ -173,7 +173,7 @@
     },
     {
       "id": "pomfy",
-      "name": "[Lawliet] Pomfy",
+      "name": "Pomfy",
       "description": "Filmes e séries em 1080p via Pomfy API",
       "version": "1.0.0",
       "author": "lawlietbr, saimuelbr",
@@ -201,7 +201,7 @@
     },
     {
       "id": "mywallpaper",
-      "name": "[Lawliet] My Wallpaper",
+      "name": "My Wallpaper",
       "description": "CDN brasileiro de animes",
       "version": "2.0.0",
       "author": "lawlietbr",
@@ -227,7 +227,7 @@
     },
     {
       "id": "doramogo",
-      "name": "[Lawliet] Doramogo",
+      "name": "Doramogo",
       "description": "Diversidade de conteúdos em 1080p",
       "version": "2.0.0",
       "author": "lawlietbr",
@@ -259,7 +259,7 @@
     },
     {
       "id": "myembed",
-      "name": "[Lawliet] MyEmbed",
+      "name": "MyEmbed",
       "description": "API de filmes e séries",
       "version": "1.0.0",
       "author": "lawlietbr",
