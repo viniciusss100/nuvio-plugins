@@ -8,7 +8,6 @@
       "description": "Movies via AnimeZeY, indexed by TMDB",
       "version": "1.0.0",
       "author": "Nuvio Team",
-      ],
       "hasSettings": true,
       "formats": ["mp4", "mkv", "m3u8"],
       "logo": "https://i.postimg.cc/RVTy2djk/ainimezey.png",
