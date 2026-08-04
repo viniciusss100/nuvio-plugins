@@ -2,7 +2,7 @@
   "name": "FontesBR",
   "version": "1.0.0",
   "scrapers": [
-      {
+    {
       "id": "animezey",
       "name": "AnimeZeY",
       "description": "Movies via AnimeZeY, indexed by TMDB",
@@ -22,22 +22,14 @@
       "description": "BrazucaPlay - Filmes, Séries e Animes em Português (comunidade Brazuca)",
       "version": "1.0.0",
       "author": "Brazuca Community",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "providers/brazucaplay.js",
       "enabled": true,
-      "formats": [
-        "m3u8",
-        "mp4"
-      ],
+      "formats": ["m3u8", "mp4"],
       "logo": "https://raw.githubusercontent.com/skyrisk/brazucaplay/master/addons/logo.png",
-      "contentLanguage": [
-        "pt"
-      ]
+      "contentLanguage": ["pt"]
     },
-        {
+    {
       "id": "netmirror",
       "name": "NetMirror",
       "description": "Netflix | Prime | Disney",
@@ -57,21 +49,12 @@
       "description": "Watch your favorite anime in Portuguese HD",
       "version": "1.0.0",
       "author": "Nuvio Team",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "providers/animesdigital.js",
       "enabled": true,
-      "formats": [
-        "mp4",
-        "m3u8"
-      ],
+      "formats": ["mp4", "m3u8"],
       "logo": "https://i.postimg.cc/vTMZgBfy/animesdigital.jpg",
-      "contentLanguage": [
-        "pt",
-        "ja"
-      ]
+      "contentLanguage": ["pt", "ja"]
     },
     {
       "id": "anitube",
@@ -79,21 +62,12 @@
       "description": "Provedor de animes pt-br.",
       "version": "1.0.0",
       "author": "Vinicius",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "providers/anitube.js",
       "enabled": true,
-      "formats": [
-        "mp4",
-        "m3u8"
-      ],
+      "formats": ["mp4", "m3u8"],
       "logo": "https://i.postimg.cc/vTMZgBfy/animesdigital.jpg",
-      "contentLanguage": [
-        "pt",
-        "ja"
-      ]
+      "contentLanguage": ["pt", "ja"]
     },
     {
       "id": "fshd",
@@ -101,18 +75,11 @@
       "description": "FSHD - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://raw.githubusercontent.com/saimuelbr/saimuel-nuvio-repo/main/providers/fshd.js",
       "enabled": true,
-      "formats": [
-        "m3u8"
-      ],
-      "contentLanguage": [
-        "pt"
-      ]
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"]
     },
     {
       "id": "megaembed",
@@ -120,18 +87,11 @@
       "description": "MegaEmbed - API| 1080p/720p",
       "version": "1.0.0",
       "author": "saimuel",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://raw.githubusercontent.com/saimuelbr/saimuel-nuvio-repo/main/providers/megaembed.js",
       "enabled": true,
-      "formats": [
-        "m3u8"
-      ],
-      "contentLanguage": [
-        "pt"
-      ]
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"]
     },
     {
       "id": "peachify",
@@ -139,18 +99,11 @@
       "description": "Peachify - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://raw.githubusercontent.com/saimuelbr/saimuel-nuvio-repo/main/providers/peachify.js",
       "enabled": true,
-      "formats": [
-        "m3u8"
-      ],
-      "contentLanguage": [
-        "pt"
-      ]
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"]
     },
     {
       "id": "redeflix",
@@ -158,18 +111,11 @@
       "description": "RedeFlix - API | 1080p",
       "version": "1.0.0",
       "author": "saimuel",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://raw.githubusercontent.com/saimuelbr/saimuel-nuvio-repo/main/providers/redeflix.js",
       "enabled": true,
-      "formats": [
-        "m3u8"
-      ],
-      "contentLanguage": [
-        "pt"
-      ]
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"]
     },
     {
       "id": "pomfy",
@@ -177,27 +123,16 @@
       "description": "Filmes e séries em 1080p via Pomfy API",
       "version": "1.0.0",
       "author": "lawlietbr, saimuelbr",
-      "supportedTypes": [
-        "tv",
-        "movie"
-      ],
+      "supportedTypes": ["tv", "movie"],
       "filename": "https://raw.githubusercontent.com/lawlietbr/liet-nuvio/refs/heads/main/providers/pomfy.js",
       "enabled": true,
       "logo": "https://pomfy.online/pomfylogofullcolor.png",
-      "contentLanguage": [
-        "pt-br"
-      ],
-      "formats": [
-        "hls",
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-br"],
+      "formats": ["hls", "m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true,
-      "tags": [
-        "filmes",
-        "séries"
-      ]
+      "tags": ["filmes", "séries"]
     },
     {
       "id": "mywallpaper",
@@ -205,25 +140,16 @@
       "description": "CDN brasileiro de animes",
       "version": "2.0.0",
       "author": "lawlietbr",
-      "supportedTypes": [
-        "tv"
-      ],
+      "supportedTypes": ["tv"],
       "filename": "https://raw.githubusercontent.com/lawlietbr/liet-nuvio/refs/heads/main/providers/mywallpaper.js",
       "enabled": true,
       "logo": "https://image2url.com/r2/default/images/1773218651086-4a0ea24e-6e2b-4a22-ab18-8cb28d1b6f23.png",
-      "contentLanguage": [
-        "pt-br"
-      ],
-      "formats": [
-        "hls",
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-br"],
+      "formats": ["hls", "m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true,
-      "tags": [
-        "anime"
-      ]
+      "tags": ["anime"]
     },
     {
       "id": "doramogo",
@@ -231,31 +157,16 @@
       "description": "Diversidade de conteúdos em 1080p",
       "version": "2.0.0",
       "author": "lawlietbr",
-      "supportedTypes": [
-        "tv",
-        "movie"
-      ],
+      "supportedTypes": ["tv", "movie"],
       "filename": "https://raw.githubusercontent.com/lawlietbr/liet-nuvio/refs/heads/main/providers/doramogo.js",
       "enabled": true,
       "logo": "https://www.doramogo.net/assets/doramogo/images/apple-touch-icon.webp?version=200.50.10",
-      "contentLanguage": [
-        "pt-br"
-      ],
-      "formats": [
-        "hls",
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-br"],
+      "formats": ["hls", "m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true,
-      "tags": [
-        "dorama",
-        "animes",
-        "series",
-        "filmes",
-        "legendado",
-        "dublado"
-      ]
+      "tags": ["dorama", "animes", "series", "filmes", "legendado", "dublado"]
     },
     {
       "id": "myembed",
@@ -263,117 +174,73 @@
       "description": "API de filmes e séries",
       "version": "1.0.0",
       "author": "lawlietbr",
-      "supportedTypes": [
-        "tv",
-        "movie"
-      ],
+      "supportedTypes": ["tv", "movie"],
       "filename": "https://raw.githubusercontent.com/lawlietbr/liet-nuvio/refs/heads/main/providers/myembed.js",
       "enabled": true,
       "logo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzFhMWExYSIgcng9IjEwIiByeT0iMTAiIC8+CiAgPHRleHQgeD0iNTAiIHk9IjY1IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NQjwvdGV4dD4KPC9zdmc+",
-      "contentLanguage": [
-        "pt-br"
-      ],
-      "formats": [
-        "hls",
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-br"],
+      "formats": ["hls", "m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true,
-      "tags": [
-        "player",
-        "embed"
-      ]
+      "tags": ["player", "embed"]
     },
-          {
+    {
       "id": "superanimes",
       "name": "💪 Super Animes",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p.",
       "version": "1.0.1",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/superanimes.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
-      },
-      {
+    },
+    {
       "id": "cine-animes",
       "name": "📽️​ Cine Animes",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p. | 480p",
       "version": "1.0.7",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/cine-animes.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4",
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4", "m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
-      },  
-      {
+    },
+    {
       "id": "homura",
       "name": "🎯 Homura",
       "description": "Animes legendado e dublado PT-BR - 720p.",
       "version": "1.0.4",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/homura.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
-     },
+    },
     {
       "id": "animefire",
       "name": "🔥 AnimeFire",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p | 360p",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/animefire.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "m3u8"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["m3u8"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
@@ -383,20 +250,12 @@
       "name": "🚗 Animes Drive",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p.",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/animesdrive.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
@@ -406,20 +265,12 @@
       "name": "💿 Animes Online CC",
       "description": "Animes legendado e dublado PT-BR - 720p.",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/animesonlinecc.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
@@ -429,20 +280,12 @@
       "name": "☁️ Animes Online Cloud",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p.",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/animesonlinecloud.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
@@ -452,20 +295,12 @@
       "name": "✨ BetterAnime",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p.",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/betteranime.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
@@ -475,25 +310,15 @@
       "name": "🐙 Goyabu",
       "description": "Animes legendado e dublado PT-BR - 1080p | 720p.",
       "version": "1.0.0",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
+      "supportedTypes": ["movie", "tv"],
       "filename": "https://github.com/AlvitoSR/Fenix-Plugin-Teste/providers/goyabu.js",
       "enabled": true,
       "logo": "",
-      "contentLanguage": [
-        "pt-BR",
-        "ja"
-      ],
-      "formats": [
-        "mp4"
-      ],
+      "contentLanguage": ["pt-BR", "ja"],
+      "formats": ["mp4"],
       "limited": false,
       "disabledPlatforms": [],
       "supportsExternalPlayer": true
     }
-  ]
-}
   ]
 }
