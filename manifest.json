@@ -184,6 +184,301 @@
       "disabledPlatforms": [],
       "supportsExternalPlayer": true,
       "tags": ["player", "embed"]
+    },
+    {
+      "id": "anime-01",
+      "name": "01 🧪 Anime One",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.4",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-01.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-02",
+      "name": "02 🎯 Anime Two",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-02.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-03",
+      "name": "03 💪 Anime Three",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.5",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-03.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-04",
+      "name": "04 🎬 Anime Four",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-04.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-05",
+      "name": "05 🧶 Anime Five",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.4",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-05.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-06",
+      "name": "06 🔝 Anime Six",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-06.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4",
+        "hls"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-07",
+      "name": "07 🐙 Anime Seven",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-07.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-08",
+      "name": "08 ☁️ Anime Eight",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-08.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-09",
+      "name": "09 🔥 Anime Nine",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-09.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-10",
+      "name": "10 💫 Anime Ten",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-10.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-11",
+      "name": "11 🚗 Anime Eleven",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.4",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-11.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
+    },
+    {
+      "id": "anime-12",
+      "name": "12 💿 Anime Twelve",
+      "description": "Fonte de anime PT-BR.",
+      "version": "1.0.3",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "https://raw.githubusercontent.com/AlvitoSR/Fenix-Plugin/main/providers/anime-12.js",
+      "enabled": true,
+      "logo": "",
+      "contentLanguage": [
+        "pt-BR",
+        "ja"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "limited": false,
+      "disabledPlatforms": [],
+      "hasSettings": true,
+      "supportsExternalPlayer": true
     }
   ]
 }
